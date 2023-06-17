@@ -1,70 +1,74 @@
-from flask import Flask, request, jsonify, send_file
-import os
+from flask import Flask, request, jsonify
 import csv
-from werkzeug.utils import secure_filename
+import pandas as pd
+from io import StringIO, BytesIO
 
 app = Flask(__name__)
-UPLOAD_FOLDER = 'uploads'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-@app.route('/process_csv', methods=['POST'])
-def process_csv():
-    # Variables needed for the process
-    output_dir = 'output'
-    directory = os.path.join(app.config['UPLOAD_FOLDER'], "files_to_join")
-    os.makedirs(output_dir, exist_ok=True)
-    output_file = f"{output_dir}/combined_file.csv"
 
+@app.route('/process_files', methods=['POST'])
+def process_files():
     # Process the uploaded files
     if 'files[]' not in request.files:
         return jsonify({'error': 'No files found in the request.'})
 
     files = request.files.getlist('files[]')
-
-    # Create the directory if it doesn't exist
-    os.makedirs(directory, exist_ok=True)
-
-    for file in files:
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(directory, filename))
-
-    # Set the directory containing the CSV files
-    directory = directory  # Update the directory path to the uploaded files
+    response_format = request.form.get('response_format', 'csv')
 
     # Initialize a list to store all the rows
     combined_rows = []
 
-    # Get a list of all CSV files in the directory
-    csv_files = [file for file in os.listdir(directory) if file.endswith(".csv")]
-
-    # Loop through each CSV file
-    for file in csv_files:
-        file_path = os.path.join(directory, file)
-
-        # Read the CSV file
-        with open(file_path, "r") as csv_file:
+    for file in files:
+        filename = file.filename.lower()
+        if filename.endswith('.csv'):
+            # Read CSV file
+            csv_file = StringIO(file.stream.read().decode('utf-8'))
             csv_reader = csv.reader(csv_file)
 
             # Skip the header if it's not the first file
-            if csv_files.index(file) > 0:
+            if len(combined_rows) > 0:
                 next(csv_reader)
 
             # Append each row to the combined_rows list
             for row in csv_reader:
                 combined_rows.append(row)
 
-    # Write the combined rows to the output file
-    with open(output_file, "w", newline="") as csv_file:
-        csv_writer = csv.writer(csv_file)
+        elif filename.endswith('.xlsx') or filename.endswith('.xls'):
+            # Read Excel file
+            excel_data = BytesIO(file.stream.read())
+            df = pd.read_excel(excel_data)
 
-        # Write the header
-        csv_writer.writerow(combined_rows[0])
+            # Convert DataFrame to list of rows
+            rows = df.values.tolist()
 
-        # Write the data rows
-        csv_writer.writerows(combined_rows[1:])
+            # Append each row to the combined_rows list
+            combined_rows.extend(rows)
 
-    # Return the processed file to the client
-    return send_file(output_file, as_attachment=True)
+    # Generate the response in the specified format
+    if response_format.lower() == 'csv':
+        # Write the combined rows to a CSV file in memory
+        output_data = StringIO()
+        csv_writer = csv.writer(output_data)
+        csv_writer.writerows(combined_rows)
+        response_data = output_data.getvalue()
+        content_type = 'text/csv'
+        file_extension = 'csv'
+    elif response_format.lower() == 'xlsx':
+        # Create an Excel file in memory using pandas
+        df = pd.DataFrame(combined_rows)
+        output_data = BytesIO()
+        with pd.ExcelWriter(output_data, engine='xlsxwriter') as writer:
+            df.to_excel(writer, sheet_name='Combined Data', index=False)
+        response_data = output_data.getvalue()
+        content_type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        file_extension = 'xlsx'
+    else:
+        return jsonify({'error': 'Invalid response format specified.'})
+
+    # Return the processed result to the client
+    return jsonify(
+        {'result': response_data.decode('utf-8'), 'content_type': content_type, 'file_extension': file_extension})
+
 
 if __name__ == '__main__':
     app.run()
