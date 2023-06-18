@@ -2,109 +2,80 @@ import { useState } from "react";
 
 const App = () => {
 	const [selectedFiles, setSelectedFiles] = useState([]);
-	const api = `${import.meta.env.VITE_API_BASE}`;
+	const [downloadFormat, setDownloadFormat] = useState("csv"); // Default format: CSV
 
-	const handleFileSelect = (event) => {
+	const handleFileChange = (event) => {
 		const files = event.target.files;
-		const allowedExtensions = ["csv", "xlsx"];
-		let validFiles = [];
-
-		// Filter and validate the selected files
-		for (let i = 0; i < files.length; i++) {
-			const file = files[i];
-			const extension = file.name.split(".").pop().toLowerCase();
-
-			if (allowedExtensions.includes(extension)) {
-				validFiles.push(file);
-			}
-		}
-
-		// Set the selected files state
-		setSelectedFiles(validFiles);
+		setSelectedFiles([...files]);
 	};
 
-	// Function to convert CSV string to a downloadable file
-	function downloadCSV(data) {
-		const blob = new Blob([data], { type: "text/csv" });
-		const url = URL.createObjectURL(blob);
-		const link = document.createElement("a");
-		link.href = url;
-		link.download = "combined_data.csv";
-		link.click();
-		URL.revokeObjectURL(url);
-	}
+	const handleFormatChange = (event) => {
+		setDownloadFormat(event.target.value);
+	};
 
-	// Function to convert XLSX string to a downloadable file
-	function downloadXLSX(data) {
-		const blob = new Blob([data], {
-			type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-		});
-		const url = URL.createObjectURL(blob);
-		const link = document.createElement("a");
-		link.href = url;
-		link.download = "combined_data.xlsx";
-		link.click();
-		URL.revokeObjectURL(url);
-	}
+	const handleSubmit = async (event) => {
+		event.preventDefault();
 
-	const handleSubmit = async () => {
-		if (selectedFiles.length > 0) {
-			const formData = new FormData();
+		const formData = new FormData();
+		for (let file of selectedFiles) {
+			formData.append("files[]", file);
+		}
 
-			selectedFiles.forEach((file) => {
-				formData.append("files[]", file);
-			});
+		// Append the selected format to the request
+		formData.append("format", downloadFormat);
 
-			await fetch(api, {
+		try {
+			const response = await fetch("http://localhost:5000/process_files", {
 				method: "POST",
 				body: formData,
-			})
-				.then((res) => res)
-				.then((data) => {
-					// Retrieve the response data and content type
-					const responseData = data.result;
-					const contentType = data.content_type;
-					const fileExtension = data.file_extension;
+			});
 
-					// Handle the response based on the content type and file extension
-					// if (contentType === "text/csv" && fileExtension === "csv") {
-					// 	downloadCSV(responseData);
-					// } else if (
-					// 	contentType ===
-					// 		"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" &&
-					// 	fileExtension === "xlsx"
-					// ) {
-					// 	downloadXLSX(responseData);
-					// } else {
-					// 	// Handle unsupported file formats or errors
-					// 	alert("Invalid response format or error occurred.");
-					// }
+			if (response.ok) {
+				// Extract the filename from the response headers
+				const contentDisposition = response.headers.get("Content-Disposition");
+				const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+				const matches = filenameRegex.exec(contentDisposition);
+				let filename = `result.${downloadFormat}`;
+				if (matches !== null && matches[1]) {
+					filename = matches[1].replace(/['"]/g, "");
+				}
 
-					console.log(responseData);
-					console.log(contentType);
-					console.log(fileExtension);
-				})
-				.catch((error) => {
-					console.error("Error:", error);
-				});
+				// Download the file
+				const blob = await response.blob();
+
+				if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+					// For IE/Edge browser
+					window.navigator.msSaveOrOpenBlob(blob, filename);
+				} else {
+					// For other browsers
+					const url = window.URL.createObjectURL(blob);
+					const link = document.createElement("a");
+					link.href = url;
+					link.download = filename;
+					link.click();
+					URL.revokeObjectURL(url);
+				}
+			} else {
+				// Handle error response
+				const error = await response.text();
+				console.error("Error:", error);
+			}
+		} catch (error) {
+			console.error("Error:", error);
 		}
 	};
 
 	return (
 		<div>
 			<h1>File Upload</h1>
-			<input
-				type="file"
-				multiple
-				accept=".csv, .xlsx"
-				onChange={handleFileSelect}
-			/>
-			{selectedFiles.length >= 2 ? (
-				<p>Files selected: {selectedFiles.length}</p>
-			) : (
-				<p>Please select at least two CSV or XLSX files.</p>
-			)}
-			<button onClick={handleSubmit}>Upload</button>
+			<form onSubmit={handleSubmit}>
+				<input type="file" multiple onChange={handleFileChange} />
+				<select value={downloadFormat} onChange={handleFormatChange}>
+					<option value="csv">CSV</option>
+					<option value="xlsx">Excel (XLSX)</option>
+				</select>
+				<button type="submit">Process Files</button>
+			</form>
 		</div>
 	);
 };
