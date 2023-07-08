@@ -39,7 +39,10 @@ const FAQSection = () => {
 			<Title order={1} align="center" mb="xl">
 				Frequently Asked Questions
 			</Title>
-			<Accordion variant="contained">
+			<Accordion
+				variant="contained"
+				defaultValue="How can I merge files using CSV Document Merger?"
+			>
 				{faq.map((item) => (
 					<AccordianRow
 						key={item.id}
