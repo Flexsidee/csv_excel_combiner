@@ -1,11 +1,4 @@
-import {
-	ActionIcon,
-	Box,
-	Center,
-	Group,
-	Text,
-	createStyles,
-} from "@mantine/core";
+import { ActionIcon, Box, Group, Text, createStyles } from "@mantine/core";
 import {
 	IconBrandGithubFilled,
 	IconBrandGmail,
@@ -13,17 +6,6 @@ import {
 	IconBrandTwitterFilled,
 	IconUser,
 } from "@tabler/icons-react";
-
-const useStyle = createStyles((theme) => ({
-	footer: {
-		background: theme.colors.dark,
-		color: theme.white,
-		display: "flex",
-		flexDirection: "column",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-}));
 
 const AppFooter = () => {
 	const { classes } = useStyle();
@@ -75,3 +57,14 @@ const AppFooter = () => {
 };
 
 export default AppFooter;
+
+const useStyle = createStyles((theme) => ({
+	footer: {
+		background: theme.colors.dark,
+		color: theme.white,
+		display: "flex",
+		flexDirection: "column",
+		alignItems: "center",
+		justifyContent: "center",
+	},
+}));
