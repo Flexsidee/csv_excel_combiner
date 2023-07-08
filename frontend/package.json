@@ -10,6 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@mantine/core": "^6.0.16",
+    "@mantine/dropzone": "^6.0.16",
+    "@mantine/hooks": "^6.0.16",
+    "@tabler/icons-react": "^2.24.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
