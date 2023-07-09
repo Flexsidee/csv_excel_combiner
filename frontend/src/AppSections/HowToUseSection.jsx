@@ -1,6 +1,6 @@
 import { Box, Center, Grid, Text, createStyles } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { IconUpload } from "@tabler/icons-react";
+import { IconUpload, IconDownload, IconSelect, IconGitMerge } from "@tabler/icons-react";
 
 const HowToUseSection = () => {
 	const { classes } = useStyle();
@@ -11,7 +11,7 @@ const HowToUseSection = () => {
 			<Center mb={35}>
 				<Text
 					fw="bold"
-					fz={44}
+					fz={mediumScreen ? 40 : 44}
 					align="center"
 					mb="xs"
 					className={classes.title}
@@ -37,7 +37,7 @@ const HowToUseSection = () => {
 				<Grid.Col mt="sm" xs={12} md={6} lg={3}>
 					<Box className={classes.steps}>
 						<Box className={classes.iconContainer}>
-							<IconUpload color="#0E3465" />
+							<IconSelect color="#0E3465" />
 						</Box>
 						<Text my="sm" fw="bold">
 							STEP 2
@@ -52,7 +52,7 @@ const HowToUseSection = () => {
 				<Grid.Col mt="sm" xs={12} md={6} lg={3}>
 					<Box className={classes.steps}>
 						<Box className={classes.iconContainer}>
-							<IconUpload color="#0E3465" />
+							<IconGitMerge color="#0E3465" />
 						</Box>
 						<Text my="sm" fw="bold">
 							STEP 3
@@ -66,7 +66,7 @@ const HowToUseSection = () => {
 				<Grid.Col mt="sm" xs={12} md={6} lg={3}>
 					<Box className={classes.steps}>
 						<Box className={classes.iconContainer}>
-							<IconUpload color="#0E3465" />
+							<IconDownload color="#0E3465" />
 						</Box>
 						<Text my="sm" fw="bold">
 							STEP 4

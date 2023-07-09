@@ -1,42 +1,77 @@
 import { useState } from "react";
-import { Burger, Group, Text, MediaQuery, createStyles } from "@mantine/core";
+import {
+	Box,
+	Burger,
+	Group,
+	Text,
+	MediaQuery,
+	createStyles,
+} from "@mantine/core";
 
 const AppNavbar = () => {
 	const { classes } = useStyle();
 	const [opened, setOpened] = useState(false);
 
-	return (
-		<Group p="lg" position="apart" className={classes.navbar}>
-			<MediaQuery largerThan="sm" styles={{ display: "none" }}>
-				<Burger
-					opened={opened}
-					onClick={() => setOpened((o) => !o)}
-					size="sm"
-					color="grey[6]"
-					mr="xl"
-				/>
-			</MediaQuery>
-			<Text fw="bold" fz={24} color="main.0">
-				CSVExcelCombiner
+	const links = [
+		{ id: 1, label: "App", link: "#app" },
+		{ id: 2, label: "About", link: "#about" },
+		{ id: 3, label: "Usage", link: "#usage" },
+		{ id: 4, label: "FAQ", link: "#faq" },
+		{ id: 5, label: "Contact", link: "#contact" },
+	];
+
+	// eslint-disable-next-line react/prop-types
+	const AppNavbarLinks = ({ label, link }) => {
+		return (
+			<Text component="a" href={link} className={classes.links}>
+				{label}
 			</Text>
-			<Group spacing={30}>
-				<Text component="a" href="#app" className={classes.links}>
-					App
+		);
+	};
+
+	return (
+		<Box className={classes.navbar}>
+			<Group p="lg" position="apart">
+				<Text fw="bold" fz={24} color="main.0">
+					CSVExcelCombiner
 				</Text>
-				<Text component="a" href="#about" className={classes.links}>
-					About
-				</Text>
-				<Text component="a" href="#usage" className={classes.links}>
-					Usage
-				</Text>
-				<Text component="a" href="#faq" className={classes.links}>
-					FAQ
-				</Text>
-				<Text component="a" href="#contact" className={classes.links}>
-					Contact
-				</Text>
+				<Box>
+					<MediaQuery largerThan="sm" styles={{ display: "none" }}>
+						<Burger
+							opened={opened}
+							onClick={() => setOpened((o) => !o)}
+							size="md"
+							color="white"
+							mr="xl"
+						/>
+					</MediaQuery>
+					<MediaQuery smallerThan="sm" styles={{ display: "none" }}>
+						<Group spacing={30}>
+							{links.map((link) => (
+								<AppNavbarLinks
+									key={link.id}
+									label={link.label}
+									link={link.link}
+								/>
+							))}
+						</Group>
+					</MediaQuery>
+				</Box>
 			</Group>
-		</Group>
+			{opened && (
+				<MediaQuery largerThan="sm" styles={{ display: "none" }}>
+					<Group pb="md" pl={20}>
+						{links.map((link) => (
+							<AppNavbarLinks
+								key={link.id}
+								label={link.label}
+								link={link.link}
+							/>
+						))}
+					</Group>
+				</MediaQuery>
+			)}
+		</Box>
 	);
 };
 
@@ -50,7 +85,7 @@ const useStyle = createStyles((theme) => ({
 	links: {
 		fontWeight: "bold",
 		fontSize: "20px",
-		color: theme.colors.main[0],
+		color: theme.colors.main[2],
 
 		"&:hover": {
 			color: theme.colors.main[3],
