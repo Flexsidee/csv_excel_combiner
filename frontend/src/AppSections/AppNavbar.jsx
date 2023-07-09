@@ -60,7 +60,17 @@ const AppNavbar = () => {
 			</Group>
 			{opened && (
 				<MediaQuery largerThan="sm" styles={{ display: "none" }}>
-					<Group pb="md" pl={20}>
+					<Box
+						pb="md"
+						pl={20}
+						style={{
+							display: "flex",
+							flexDirection: "column",
+							justifyContent: "center",
+							alignItems: "center",
+							gap: "8px",
+						}}
+					>
 						{links.map((link) => (
 							<AppNavbarLinks
 								key={link.id}
@@ -68,7 +78,7 @@ const AppNavbar = () => {
 								link={link.link}
 							/>
 						))}
-					</Group>
+					</Box>
 				</MediaQuery>
 			)}
 		</Box>
