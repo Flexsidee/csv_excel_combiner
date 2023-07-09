@@ -4,34 +4,46 @@ const FAQSection = () => {
 	const theme = useMantineTheme();
 	const faq = [
 		{
-			id: 1,
-			label: "How can I merge files using CSV Document Merger?",
+			id: 6,
+			label: "What is the requirement for merging files?",
 			content:
-				"First of all, you need to select and add CSV files for merging by two ways: drag and drop your CSV files to the white area with the label ”Click or drop your file here” or click on this area and then select the desired CSV files using file explorer. Once the files are added, the green progress bar will begin to grow. When the process is completed, you can click the Save button and then download your merged CSV file.",
+				"The files you want to combine or merge should have the same header across all files.",
+		},
+		{
+			id: 7,
+			label: "Does CSVExcelCombiner repeats the header for each file added?",
+			content:
+				"No, the result file has the header only once which is at the begining of the file.",
+		},
+		{
+			id: 1,
+			label: "How can I merge files using CSVExcelCombiner?",
+			content:
+				"First of all, you need to select and add files (either CSV or XLSX files) for merging by two ways: drag and drop your files to the white area with the label ”Click or drop your file here” or click on this area and then select the desired files using file explorer. Once the files are added, a button will appear istructing you to merge the files. When the process is completed, the combine file will be downloaded automatically to your device.",
 		},
 		{
 			id: 2,
-			label: "How long does it take to merge CSV files?",
+			label: "How long does it take to combine files?",
 			content:
-				"Usually, this CSV Document Merger works fast for small files in seconds.",
+				"CSVExcelCombiner combines files very fast for small files in seconds.",
 		},
 		{
 			id: 3,
-			label: "Is it safe to merge files using our free CSV Document Merger?",
+			label: "Is it safe to combine files using CSVExcelCombiner?",
 			content:
-				"Yes, the download link of merged CSV file will be available only for you. The uploaded files will be ereased after 24 hours and the download link will stop working after this time period. No one has access to your files. The CSV Document Merger is absolutely safe.",
+				"Yes, the downloaded result file is made available only for you. The uploaded files are erased on our server immediately the file is downloaded on your device. No one has access to your files. CSVExcelCombiner is absolutely safe.",
 		},
 		{
 			id: 4,
-			label: "Can I merge CSV files on Linux, Mac OS or Android?",
+			label: "Can I merge files on Linux, Mac OS or Android?",
 			content:
-				"Yes, you can use our free CSV Document Merger on any operating system that has a web browser. Our CSV Document Merger works online and does not require any software installation.",
+				"Yes, you can use CSVExcelCombiner on any operating system that has a web browser. CSVExcelCombiner works online and does not require any software installation.",
 		},
 		{
 			id: 5,
-			label: "What browser should I use to merge CSV files?",
+			label: "What browser should I use to merge files?",
 			content:
-				"You can use any modern browser to merge CSV files, for example, Google Chrome, Microsoft Edge, Firefox, Opera, or Safari.",
+				"You can use any modern browser to merge files, for example, Google Chrome, Microsoft Edge, Firefox, Opera, or Safari.",
 		},
 	];
 
@@ -53,7 +65,7 @@ const FAQSection = () => {
 			</Center>
 			<Accordion
 				variant="contained"
-				defaultValue="How can I merge files using CSV Document Merger?"
+				defaultValue="What is the requirement for merging files?"
 			>
 				{faq.map((item) => (
 					<AccordianRow
