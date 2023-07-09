@@ -68,7 +68,7 @@ const SolutionSection = () => {
 		try {
 			setLoading(true);
 			const response = await fetch(
-				"http://flexisdee.pythonanywhere.com/process_files",
+				"https://flexisdee.pythonanywhere.com/process_files",
 				{
 					method: "POST",
 					body: formData,
