@@ -67,10 +67,13 @@ const SolutionSection = () => {
 
 		try {
 			setLoading(true);
-			const response = await fetch("http://localhost:5000/process_files", {
-				method: "POST",
-				body: formData,
-			});
+			const response = await fetch(
+				"http://flexisdee.pythonanywhere.com/process_files",
+				{
+					method: "POST",
+					body: formData,
+				}
+			);
 
 			if (response.ok) {
 				// Extract the filename from the response headers
