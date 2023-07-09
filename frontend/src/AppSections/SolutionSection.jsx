@@ -11,10 +11,12 @@ import {
 } from "@mantine/core";
 import { Dropzone } from "@mantine/dropzone";
 import { modals } from "@mantine/modals";
+import { useMediaQuery } from "@mantine/hooks";
 import { IconUpload, IconX, IconFile, IconPlus } from "@tabler/icons-react";
 
 const SolutionSection = () => {
 	const addRef = useRef(null);
+	const smallScreen = useMediaQuery("(max-width: 568px)");
 	const [loading, setLoading] = useState(false);
 	const [selectedFiles, setSelectedFiles] = useState([]);
 	const [downloadFormat, setDownloadFormat] = useState("CSV"); // Default format: CSV
@@ -54,6 +56,25 @@ const SolutionSection = () => {
 		});
 	};
 
+	const showRejectModal = () => {
+		modals.open({
+			title: "File Unacceptable",
+			centered: true,
+			children: (
+				<Box>
+					<Text my="sm" align="center">
+						Only <strong>.csv</strong> and <strong>.xlsx </strong> files are
+						accepted. <br />
+						Other file types are unsupported.
+					</Text>
+					<Button fullWidth color="greey.2" onClick={modals.closeAll} mt="md">
+						Close
+					</Button>
+				</Box>
+			),
+		});
+	};
+
 	const handleMergeFiles = async (event) => {
 		event.preventDefault();
 
@@ -67,13 +88,10 @@ const SolutionSection = () => {
 
 		try {
 			setLoading(true);
-			const response = await fetch(
-				"https://flexisdee.pythonanywhere.com/process_files",
-				{
-					method: "POST",
-					body: formData,
-				}
-			);
+			const response = await fetch(import.meta.env.VITE_APP_API_URL, {
+				method: "POST",
+				body: formData,
+			});
 
 			if (response.ok) {
 				// Extract the filename from the response headers
@@ -102,6 +120,7 @@ const SolutionSection = () => {
 				}
 
 				setLoading(false);
+				setSelectedFiles([]);
 				showCompleteModal();
 			} else {
 				// Handle error response
@@ -126,14 +145,14 @@ const SolutionSection = () => {
 	};
 
 	return (
-		<Box id="app" mt={100}>
+		<Box id="app" mt={smallScreen ? 50 : 100}>
 			<Center>
 				<Box style={{ textAlign: "center" }} mb="xl">
-					<Text fw="bold" fz={44}>
+					<Text fw="bold" fz={smallScreen ? 30 : 44}>
 						CSV and Excel Combiner
 					</Text>
 					<Text mt="sm" color="grey">
-						Combine CSV or/and Excel files from any device with any browser.
+						Combine CSV or/and Excel files from any device.
 					</Text>
 					<Text color="grey" mb="sm">
 						Developed by{" "}
@@ -164,7 +183,7 @@ const SolutionSection = () => {
 							Your file will be downloaded automatically after clicking the
 							merge button.
 						</Text>
-						<Text>
+						<Text mt="sm">
 							Default download format is CSV, you can change that using the
 							select button beside the merge button.
 						</Text>
@@ -175,7 +194,7 @@ const SolutionSection = () => {
 					onDrop={(files) =>
 						setSelectedFiles((prevFiles) => [...prevFiles, ...files])
 					}
-					onReject={() => alert("Files Unaccepted")}
+					onReject={() => showRejectModal()}
 					maxSize={3 * 1024 ** 2}
 					accept={{
 						"text/csv": [".csv"], //Comma-separated values (CSV)
@@ -189,7 +208,7 @@ const SolutionSection = () => {
 					{selectedFiles.length > 0 ? (
 						<Group
 							style={{
-								minHeight: rem(260),
+								minHeight: smallScreen ? rem(160) : rem(260),
 							}}
 						>
 							{selectedFiles.map((file, index) => (
@@ -210,7 +229,10 @@ const SolutionSection = () => {
 						<Group
 							position="center"
 							spacing="xl"
-							style={{ minHeight: rem(300), pointerEvents: "none" }}
+							style={{
+								minHeight: smallScreen ? rem(200) : rem(300),
+								pointerEvents: "none",
+							}}
 						>
 							<Dropzone.Accept>
 								<IconUpload size="3.2rem" stroke={1.5} color="blue" />
@@ -222,11 +244,21 @@ const SolutionSection = () => {
 								<IconFile size="3.2rem" stroke={1.5} />
 							</Dropzone.Idle>
 							<Box>
-								<Text size="xl" inline>
-									Drag csv or excel files here or click to select files
+								<Text
+									size={smallScreen ? "md" : "xl"}
+									inline
+									align={smallScreen ? "center" : "left"}
+								>
+									Drag csv or excel files here, or click to select files.
 								</Text>
-								<Text size="sm" color="dimmed" inline mt={7}>
-									Attach as many files as you like, each file should not exceed
+								<Text
+									size="sm"
+									color="dimmed"
+									inline
+									mt={7}
+									align={smallScreen ? "center" : "left"}
+								>
+									Attach as many files as you like, each file should not exceed.
 									5mb
 								</Text>
 							</Box>

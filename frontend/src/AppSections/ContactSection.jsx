@@ -10,9 +10,11 @@ import {
 	useMantineTheme,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import { useMediaQuery } from "@mantine/hooks";
 
 const ContactSection = () => {
 	const theme = useMantineTheme();
+	const mediumScreen = useMediaQuery("(max-width: 768px)");
 	const [loading, setLoading] = useState(false);
 	const [email, setEmail] = useState("");
 	const [message, setMessage] = useState("");
@@ -50,7 +52,11 @@ const ContactSection = () => {
 	};
 
 	return (
-		<Box mt={150} mb={100} id="contact">
+		<Box
+			mt={mediumScreen ? 100 : 150}
+			mb={mediumScreen ? 50 : 100}
+			id="contact"
+		>
 			<Center>
 				<Text
 					fw="bold"
@@ -69,26 +75,30 @@ const ContactSection = () => {
 				You have a message or comment for the developer? Kindly fill the form
 				below.
 				<br />
-				You can also reach out to the developer by clicking the icons on the
-				website footer.
+				{!mediumScreen && (
+					<>
+						You can also reach out to the developer by clicking the icons on the
+						website footer.
+					</>
+				)}
 			</Text>
 			<Box>
 				<Grid>
-					<Grid.Col span={6}>
+					<Grid.Col xs={12} sm={6}>
 						<TextInput
 							label="Your Name"
 							placeholder="Enter your name"
-							size="lg"
+							size={mediumScreen ? "sm" : "lg"}
 							value={name}
 							onChange={(e) => setName(e.target.value)}
 						/>
 					</Grid.Col>
-					<Grid.Col span={6}>
+					<Grid.Col xs={12} sm={6}>
 						<TextInput
 							label="Email Address"
 							placeholder="Enter your email address"
 							value={email}
-							size="lg"
+							size={mediumScreen ? "sm" : "lg"}
 							onChange={(e) => setEmail(e.target.value)}
 							withAsterisk
 						/>
@@ -98,7 +108,7 @@ const ContactSection = () => {
 							label="Your Comment"
 							placeholder="Your comment"
 							autosize
-							size="lg"
+							size={mediumScreen ? "sm" : "lg"}
 							minRows={6}
 							maxRows={10}
 							value={message}

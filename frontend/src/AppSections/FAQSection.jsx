@@ -1,7 +1,10 @@
 import { Accordion, Box, Center, Text, useMantineTheme } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 
 const FAQSection = () => {
 	const theme = useMantineTheme();
+	const mediumScreen = useMediaQuery("(max-width: 768px)");
+
 	const faq = [
 		{
 			id: 6,
@@ -48,7 +51,7 @@ const FAQSection = () => {
 	];
 
 	return (
-		<Box mt={150} id="faq">
+		<Box mt={mediumScreen ? 100 : 150} id="faq">
 			<Center mb={25}>
 				<Text
 					fw="bold"
@@ -56,10 +59,10 @@ const FAQSection = () => {
 					align="center"
 					style={{
 						borderBottom: `4px solid ${theme.colors.main[3]}`,
-						width: "600px",
+						width: mediumScreen ? "100px" : "600px",
 					}}
 				>
-					Frequently Asked Questions
+					{mediumScreen ? <>FAQ</> : <>Frequently Asked Questions</>}
 				</Text>
 			</Center>
 			<Text align="center" fw="bold" mb="lg">
@@ -84,14 +87,17 @@ const FAQSection = () => {
 export default FAQSection;
 
 const AccordianRow = ({ label, content }) => {
+	const mediumScreen = useMediaQuery("(max-width: 768px)");
 	return (
 		<Accordion.Item value={label}>
 			<Accordion.Control>
-				<Text fz={20} fw="bold">
+				<Text fz={mediumScreen ? 14 : 20} fw="bold">
 					{label}
 				</Text>
 			</Accordion.Control>
-			<Accordion.Panel>{content}</Accordion.Panel>
+			<Accordion.Panel>
+				<Text align="justify">{content}</Text>
+			</Accordion.Panel>
 		</Accordion.Item>
 	);
 };

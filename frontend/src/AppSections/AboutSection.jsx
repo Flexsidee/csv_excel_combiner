@@ -1,10 +1,12 @@
 import { Box, Center, Text, useMantineTheme } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 
 const AboutSection = () => {
 	const theme = useMantineTheme();
+	const mediumScreen = useMediaQuery("(max-width: 768px)");
 
 	return (
-		<Box mt={130} id="about">
+		<Box mt={mediumScreen ? 100 : 130} id="about">
 			<Center>
 				<Text
 					fw="bold"
@@ -19,14 +21,14 @@ const AboutSection = () => {
 					About
 				</Text>
 			</Center>
-			<Text>
+			<Text align="justify">
 				CSVExcelCombiner is a web application that simplifies the process of
 				merging and combining CSV (Comma-Separated Values) and Excel files. This
 				powerful tool allows users to upload multiple files in either CSV or
 				Excel format, and seamlessly merge them into a single consolidated file.{" "}
 			</Text>{" "}
 			<br />
-			<Text>
+			<Text align="justify">
 				With CSVExcelCombiner, users can effortlessly combine data from various
 				sources, eliminating the need for manual data manipulation and saving
 				valuable time. The application provides a user-friendly interface where
@@ -35,7 +37,7 @@ const AboutSection = () => {
 				workflows.
 			</Text>{" "}
 			<br />
-			<Text>
+			<Text align="justify">
 				The merging process intelligently handles headers and data, preserving
 				the structure of the original files. Users have the flexibility to
 				choose the desired output format, whether it's CSV or Excel, based on
@@ -43,7 +45,7 @@ const AboutSection = () => {
 				conveniently download the merged file directly from the application.
 			</Text>
 			<br />
-			<Text>
+			<Text align="justify">
 				CSVExcelCombiner empowers businesses, researchers, and data analysts by
 				simplifying the data integration process. Whether it's consolidating
 				sales reports, merging survey responses, or combining data from multiple
