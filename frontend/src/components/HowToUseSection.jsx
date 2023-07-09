@@ -5,8 +5,8 @@ const HowToUseSection = () => {
 	const { classes } = useStyle();
 
 	return (
-		<Box mt={100} id="usage">
-			<Center mb="xl">
+		<Box mt={150} id="usage">
+			<Center mb={35}>
 				<Text
 					fw="bold"
 					fz={44}

@@ -46,7 +46,6 @@ const useStyle = createStyles((theme) => ({
 	navbar: {
 		background: theme.colors.main[4],
 		color: theme.colors.main[0],
-		marginBottom: "40px",
 	},
 	links: {
 		fontWeight: "bold",

@@ -79,7 +79,7 @@ const SolutionSection = () => {
 	};
 
 	return (
-		<Box id="app">
+		<Box id="app" mt={100}>
 			<Center>
 				<Box style={{ textAlign: "center" }} mb="xl">
 					<Text fw="bold" fz={44}>

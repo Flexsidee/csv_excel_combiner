@@ -48,13 +48,12 @@ const FAQSection = () => {
 	];
 
 	return (
-		<Box mt={100} id="faq">
-			<Center>
+		<Box mt={150} id="faq">
+			<Center mb={25}>
 				<Text
 					fw="bold"
 					fz={44}
 					align="center"
-					mb="md"
 					style={{
 						borderBottom: `4px solid ${theme.colors.main[3]}`,
 						width: "600px",
@@ -63,6 +62,9 @@ const FAQSection = () => {
 					Frequently Asked Questions
 				</Text>
 			</Center>
+			<Text align="center" fw="bold" mb="lg">
+				You can't find your question in FAQ? Kindly fill the form after FAQ.
+			</Text>
 			<Accordion
 				variant="contained"
 				defaultValue="What is the requirement for merging files?"
