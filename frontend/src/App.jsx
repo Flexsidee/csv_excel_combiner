@@ -1,12 +1,12 @@
 import { Container } from "@mantine/core";
 
-import AboutSection from "./components/AboutSection";
+import AboutSection from "./AppSections/AboutSection";
 import AppFooter from "./components/AppFooter";
-import AppNavbar from "./components/AppNavbar";
-import ContactSection from "./components/ContactSection";
-import FAQSection from "./components/FAQSection";
-import HowToUseSection from "./components/HowToUseSection";
-import SolutionSection from "./components/SolutionSection";
+import AppNavbar from "./AppSections/AppNavbar";
+import ContactSection from "./AppSections/ContactSection";
+import FAQSection from "./AppSections/FAQSection";
+import HowToUseSection from "./AppSections/HowToUseSection";
+import SolutionSection from "./AppSections/SolutionSection";
 
 const App = () => {
 	return (

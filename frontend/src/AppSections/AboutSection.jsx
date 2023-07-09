@@ -4,7 +4,7 @@ const AboutSection = () => {
 	const theme = useMantineTheme();
 
 	return (
-		<Box mt={150} id="about">
+		<Box mt={130} id="about">
 			<Center>
 				<Text
 					fw="bold"

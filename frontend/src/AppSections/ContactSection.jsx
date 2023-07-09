@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
 	Box,
+	Button,
 	Center,
 	Grid,
 	Text,
@@ -8,12 +9,45 @@ import {
 	Textarea,
 	useMantineTheme,
 } from "@mantine/core";
+import { modals } from "@mantine/modals";
 
 const ContactSection = () => {
 	const theme = useMantineTheme();
+	const [loading, setLoading] = useState(false);
 	const [email, setEmail] = useState("");
 	const [message, setMessage] = useState("");
 	const [name, setName] = useState("");
+
+	const handleSubmitForm = () => {
+		setLoading(true);
+
+		const showCompleteModal = () =>
+			modals.open({
+				title: "Message Sent Successfully",
+				centered: true,
+				children: (
+					<Box>
+						<Text my="sm" align="center">
+							This is to inform you that your message has been sent to us
+							succesfully, we will respond to your email.
+						</Text>
+						<Button fullWidth color="greey.2" onClick={modals.closeAll} mt="md">
+							Close
+						</Button>
+					</Box>
+				),
+			});
+
+		const form = {
+			sender_email: email,
+			sender_name: name,
+			message_body: message,
+			datetime: "",
+		};
+
+		setLoading(false);
+		showCompleteModal();
+	};
 
 	return (
 		<Box mt={150} mb={100} id="contact">
@@ -72,6 +106,17 @@ const ContactSection = () => {
 						/>
 					</Grid.Col>
 				</Grid>
+				<div style={{ width: "100%" }}>
+					<Button
+						color="main.3"
+						mt="md"
+						fullWidth
+						onClick={handleSubmitForm}
+						loading={loading ? true : false}
+					>
+						Submit Form
+					</Button>
+				</div>
 			</Box>
 		</Box>
 	);

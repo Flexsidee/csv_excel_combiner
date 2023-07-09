@@ -10,12 +10,49 @@ import {
 	Center,
 } from "@mantine/core";
 import { Dropzone } from "@mantine/dropzone";
+import { modals } from "@mantine/modals";
 import { IconUpload, IconX, IconFile, IconPlus } from "@tabler/icons-react";
 
 const SolutionSection = () => {
 	const addRef = useRef(null);
+	const [loading, setLoading] = useState(false);
 	const [selectedFiles, setSelectedFiles] = useState([]);
 	const [downloadFormat, setDownloadFormat] = useState("CSV"); // Default format: CSV
+
+	const showCompleteModal = () =>
+		modals.open({
+			title: "Files Combined Successfully",
+			centered: true,
+			children: (
+				<Box>
+					<Text my="sm" align="center">
+						This is to inform you that your files have been merged succesfully
+						and the combined file has been downloaded to your device.
+					</Text>
+					<Button fullWidth color="greey.2" onClick={modals.closeAll} mt="md">
+						Close
+					</Button>
+				</Box>
+			),
+		});
+
+	const showErrorModal = () => {
+		modals.open({
+			title: "Server Error",
+			centered: true,
+			children: (
+				<Box>
+					<Text my="sm" align="center">
+						Oops! There has been an issue with the server. Kindly retry and make
+						you sure you have internet connection.
+					</Text>
+					<Button fullWidth color="greey.2" onClick={modals.closeAll} mt="md">
+						Close
+					</Button>
+				</Box>
+			),
+		});
+	};
 
 	const handleMergeFiles = async (event) => {
 		event.preventDefault();
@@ -29,6 +66,7 @@ const SolutionSection = () => {
 		formData.append("format", downloadFormat);
 
 		try {
+			setLoading(true);
 			const response = await fetch("http://localhost:5000/process_files", {
 				method: "POST",
 				body: formData,
@@ -59,14 +97,20 @@ const SolutionSection = () => {
 					link.click();
 					URL.revokeObjectURL(url);
 				}
-				alert("done");
+
+				setLoading(false);
+				showCompleteModal();
 			} else {
 				// Handle error response
 				const error = await response.text();
 				console.error("Error:", error);
+				setLoading(false);
+				showErrorModal();
 			}
 		} catch (error) {
 			console.error("Error:", error);
+			setLoading(false);
+			showErrorModal();
 		}
 	};
 
@@ -196,7 +240,9 @@ const SolutionSection = () => {
 							value={downloadFormat}
 							onChange={setDownloadFormat}
 						/>
-						<Button onClick={handleMergeFiles}>Merge Now</Button>
+						<Button onClick={handleMergeFiles} loading={loading ? true : false}>
+							Merge Now
+						</Button>
 					</Group>
 				)}
 			</Box>

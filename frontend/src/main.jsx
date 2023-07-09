@@ -1,9 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { MantineProvider } from "@mantine/core";
+import { ModalsProvider } from "@mantine/modals";
 
 import App from "./App.jsx";
-import { CustomFonts } from "./components/CustomFont.jsx";
+import { CustomFonts } from "./AppSections/CustomFont.jsx";
 
 const theme = {
 	fontFamily: "Core Sans C",
@@ -30,7 +31,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
 		<MantineProvider theme={theme} withGlobalStyles withNormalizeCSS>
 			<CustomFonts />
-			<App />
+			<ModalsProvider>
+				<App />
+			</ModalsProvider>
 		</MantineProvider>
 	</React.StrictMode>
 );
