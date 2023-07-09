@@ -1,6 +1,7 @@
-import { Accordion, Box, Text, Title } from "@mantine/core";
+import { Accordion, Box, Center, Text, useMantineTheme } from "@mantine/core";
 
 const FAQSection = () => {
+	const theme = useMantineTheme();
 	const faq = [
 		{
 			id: 1,
@@ -35,10 +36,21 @@ const FAQSection = () => {
 	];
 
 	return (
-		<Box my="xl" id="faq">
-			<Title order={1} align="center" mb="xl">
-				Frequently Asked Questions
-			</Title>
+		<Box mt={100} id="faq">
+			<Center>
+				<Text
+					fw="bold"
+					fz={44}
+					align="center"
+					mb="md"
+					style={{
+						borderBottom: `4px solid ${theme.colors.main[3]}`,
+						width: "600px",
+					}}
+				>
+					Frequently Asked Questions
+				</Text>
+			</Center>
 			<Accordion
 				variant="contained"
 				defaultValue="How can I merge files using CSV Document Merger?"
