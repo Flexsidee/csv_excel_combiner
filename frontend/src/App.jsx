@@ -11,8 +11,8 @@ import SolutionSection from "./components/SolutionSection";
 const App = () => {
 	return (
 		<>
-			<Container>
-				<AppNavbar />
+			<AppNavbar />
+			<Container size="xl">
 				<SolutionSection />
 				<AboutSection />
 				<HowToUseSection />

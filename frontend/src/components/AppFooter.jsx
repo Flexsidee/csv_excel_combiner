@@ -4,7 +4,7 @@ import {
 	IconBrandGmail,
 	IconBrandLinkedin,
 	IconBrandTwitterFilled,
-	IconUser,
+	IconWorldWww,
 } from "@tabler/icons-react";
 
 const AppFooter = () => {
@@ -15,15 +15,17 @@ const AppFooter = () => {
 			<Group>
 				<ActionIcon
 					component="a"
-					href="https://www.linkedin.com/in/danielsomade/"
+					href="https://somadedaniel.netlify.app/"
 					variant="transparent"
+					target="_blank"
 				>
-					<IconUser color="white" size={24} />
+					<IconWorldWww color="white" size={24} />
 				</ActionIcon>
 				<ActionIcon
 					component="a"
 					href="https://github.com/Flexsidee"
 					variant="transparent"
+					target="_blank"
 				>
 					<IconBrandGithubFilled color="white" size={24} />
 				</ActionIcon>
@@ -31,6 +33,7 @@ const AppFooter = () => {
 					component="a"
 					href="https://www.linkedin.com/in/danielsomade/"
 					variant="transparent"
+					target="_blank"
 				>
 					<IconBrandLinkedin color="white" size={24} />
 				</ActionIcon>
@@ -38,6 +41,7 @@ const AppFooter = () => {
 					component="a"
 					href="https://www.linkedin.com/in/danielsomade/"
 					variant="transparent"
+					target="_blank"
 				>
 					<IconBrandTwitterFilled color="white" size={24} />
 				</ActionIcon>
@@ -45,6 +49,7 @@ const AppFooter = () => {
 					component="a"
 					href="mailto:flexsidee@gmail.com"
 					variant="transparent"
+					target="_blank"
 				>
 					<IconBrandGmail color="white" size={24} />
 				</ActionIcon>
@@ -60,8 +65,8 @@ export default AppFooter;
 
 const useStyle = createStyles((theme) => ({
 	footer: {
-		background: theme.colors.dark,
-		color: theme.white,
+		background: theme.colors.main[4],
+		color: theme.colors.main[0],
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",

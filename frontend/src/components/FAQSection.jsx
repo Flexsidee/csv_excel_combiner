@@ -35,7 +35,7 @@ const FAQSection = () => {
 	];
 
 	return (
-		<Box my="xl">
+		<Box my="xl" id="faq">
 			<Title order={1} align="center" mb="xl">
 				Frequently Asked Questions
 			</Title>
