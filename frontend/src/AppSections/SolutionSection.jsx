@@ -88,15 +88,10 @@ const SolutionSection = () => {
 
 		try {
 			setLoading(true);
-			const response = await fetch(
-				import.meta.env.VITE_USER_NODE_ENV === "development"
-					? import.meta.env.local.VITE_APP_API_URL
-					: import.meta.env.VITE_API_URL,
-				{
-					method: "POST",
-					body: formData,
-				}
-			);
+			const response = await fetch(import.meta.env.VITE_APP_API_URL, {
+				method: "POST",
+				body: formData,
+			});
 
 			if (response.ok) {
 				// Extract the filename from the response headers
