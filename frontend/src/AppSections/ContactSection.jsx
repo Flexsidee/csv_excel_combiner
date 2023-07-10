@@ -20,35 +20,85 @@ const ContactSection = () => {
 	const [message, setMessage] = useState("");
 	const [name, setName] = useState("");
 
-	const handleSubmitForm = () => {
+	const handleSubmitForm = async () => {
 		setLoading(true);
-
-		const showCompleteModal = () =>
-			modals.open({
-				title: "Message Sent Successfully",
-				centered: true,
-				children: (
-					<Box>
-						<Text my="sm" align="center">
-							This is to inform you that your message has been sent to us
-							succesfully, we will respond to your email.
-						</Text>
-						<Button fullWidth color="greey.2" onClick={modals.closeAll} mt="md">
-							Close
-						</Button>
-					</Box>
-				),
-			});
 
 		const form = {
 			sender_email: email,
 			sender_name: name,
 			message_body: message,
-			datetime: "",
 		};
 
+		try {
+			const response = await fetch(import.meta.env.VITE_APP_API_URL_EMAIL, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(form),
+			});
+
+			if (response.ok) {
+				// console.log("Response:", response);
+				showCompleteModal();
+				setEmail("");
+				setMessage("");
+				setName("");
+			} else {
+				// const error = await response.text();
+				// console.error("Error:", error);
+				showErrorModal();
+			}
+		} catch (error) {
+			// console.error("Error:", error);
+			showErrorModal();
+		}
+
 		setLoading(false);
-		showCompleteModal();
+	};
+
+	const showCompleteModal = () =>
+		modals.open({
+			title: "Message Sent Successfully",
+			centered: true,
+			children: (
+				<Box>
+					<Text mt="sm" mb="lg" align="center">
+						{name && (
+							<>
+								Hi{" "}
+								<Text component="span" transform="capitalize" mb="sm" fw="bold">
+									{name}
+								</Text>
+								, <br />
+							</>
+						)}
+						This is to inform you that your message has been sent to us
+						succesfully, we will respond to your email.
+					</Text>
+					<Button fullWidth color="greey.2" onClick={modals.closeAll} mt="md">
+						Close
+					</Button>
+				</Box>
+			),
+		});
+
+	const showErrorModal = () => {
+		modals.open({
+			title: "Server Error",
+			centered: true,
+			children: (
+				<Box>
+					<Text my="sm" align="center">
+						Oops! There has been an issue with the server. Kindly retry and make
+						you sure you have internet connection.
+					</Text>
+					<Button fullWidth color="greey.2" onClick={modals.closeAll} mt="md">
+						Close
+					</Button>
+				</Box>
+			),
+		});
 	};
 
 	return (
