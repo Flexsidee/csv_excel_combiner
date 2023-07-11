@@ -11,6 +11,10 @@ const theme = {
 	fontFamilyMonospace: "Core Sans C",
 	headings: { fontFamily: "Core Sans C" },
 
+	"*": {
+		scrollBehavior: "smooth",
+	},
+	
 	components: {
 		Text: {
 			defaultProps: {
